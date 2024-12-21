@@ -1,0 +1,30 @@
+---
+services:
+  genesis:
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    image: naokitakahashi12/genesis-env:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    volumes:
+      - type: bind
+        source: /tmp
+        target: /tmp
+      - type: bind
+        source: ~/.Xauthority
+        target: /root/.Xauthority
+      - type: bind
+        source: ./shared
+        target: /mnt/shared
+    env_file:
+      - ./env_files/xwindow.env
+    ports:
+      - 6006:6006
+    tty: true
