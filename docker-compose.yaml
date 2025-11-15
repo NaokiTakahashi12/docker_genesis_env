@@ -5,6 +5,10 @@ services:
       context: docker
       dockerfile: Dockerfile
     image: naokitakahashi12/genesis-env:latest
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
     deploy:
       resources:
         reservations:
@@ -23,6 +27,8 @@ services:
       - type: bind
         source: ./shared
         target: /mnt/shared
+    devices:
+      - /dev/dri
     env_file:
       - ./env_files/xwindow.env
     ports:
